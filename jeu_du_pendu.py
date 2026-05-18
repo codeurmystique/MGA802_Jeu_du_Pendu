@@ -287,12 +287,59 @@ def demander_rejouer():
             print("Veuillez entrer 'o' pour oui ou 'n' pour non.")
 
 
+def choisir_fichier_mots():
+    """
+    Permet à l'utilisateur de choisir son propre fichier de mots.
+
+    Si l'utilisateur ne souhaite pas fournir un fichier,
+    le programme utilise 'mots_pendu.txt' par défaut.
+
+    Retour :
+        Le nom du fichier à utiliser
+    """
+
+    # Demander à l'utilisateur s'il veut utiliser un fichier personnalisé
+    reponse = input(
+        "Voulez-vous utiliser votre propre fichier de mots ? (o/n) : "
+    ).lower()
+
+    # Si l'utilisateur répond oui
+    if reponse == "o":
+
+        # Demander le nom du fichier
+        nom_fichier = input(
+            "Entrez le nom du fichier (exemple : mes_mots.txt) : "
+        )
+
+        # Vérifier si le fichier existe et contient des mots
+        mots = charger_mots(nom_fichier)
+
+        # Si des mots ont été chargés correctement
+        if mots:
+            print("Fichier personnalisé chargé avec succès.")
+            return nom_fichier
+
+        # Si le fichier est invalide ou vide
+        else:
+            print(
+                "Impossible de charger ce fichier. "
+                "Le fichier par défaut sera utilisé."
+            )
+
+    # Si l'utilisateur répond non
+    # OU si le fichier personnalisé ne fonctionne pas
+    return "mots_pendu.txt"
+
 # ------------------------------------------------------------
 # Programme principal
 # ------------------------------------------------------------
 
 def main():
-    mots = charger_mots()
+    # Choisir le fichier de mots à utiliser
+    nom_fichier = choisir_fichier_mots()
+
+    # Charger les mots du fichier choisi
+    mots = charger_mots(nom_fichier)
 
     # Boucle principale du jeu
     while True:

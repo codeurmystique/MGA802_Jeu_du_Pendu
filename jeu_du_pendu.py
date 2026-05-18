@@ -268,11 +268,42 @@ def jouer_partie(liste_mots):
     print("Le mot était :", mot_secret)
 
 
+def demander_rejouer():
+    """
+    Demande à l'utilisateur s'il souhaite rejouer.
+
+    Retour :
+        True si oui, False si non
+    """
+
+    while True:
+        reponse = input("\nVoulez-vous rejouer ? (o/n) : ").lower()
+
+        if reponse == "o":
+            return True
+        elif reponse == "n":
+            return False
+        else:
+            print("Veuillez entrer 'o' pour oui ou 'n' pour non.")
+
+
 # ------------------------------------------------------------
-# Test temporaire de la boucle principale du jeu
-# Cette partie sert seulement à vérifier que la lecture du fichier fonctionne.
-# Elle sera retirée ou modifiée plus tard.
+# Programme principal
 # ------------------------------------------------------------
 
-mots = charger_mots()
-jouer_partie(mots)
+def main():
+    mots = charger_mots()
+
+    # Boucle principale du jeu
+    while True:
+        jouer_partie(mots)
+
+        # Demander si l'utilisateur veut rejouer
+        if not demander_rejouer():
+            print("Merci d'avoir joué !")
+            break
+
+
+# Lancer le programme
+if __name__ == "__main__":
+    main()

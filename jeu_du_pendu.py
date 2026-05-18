@@ -147,6 +147,33 @@ def afficher_mot_cache(mot, lettres_trouvees):
     # Enlever l'espace inutile à la fin et retourner l'affichage.
     return affichage.strip()
 
+def demander_lettre():
+    """
+    Demande à l'utilisateur d'entrer une lettre valide.
+
+    Conditions :
+    - Une seule lettre
+    - Pas de chiffre
+    - Pas de symbole
+
+    Retour :
+        Une lettre valide en minuscule
+    """
+
+    while True:
+        lettre = input("Entrez une lettre : ").lower()
+
+        # Vérifier que l'entrée contient exactement un caractère
+        if len(lettre) != 1:
+            print("Veuillez entrer une seule lettre.")
+            continue
+
+        # Vérifier que c'est bien une lettre alphabétique
+        if not lettre.isalpha():
+            print("Veuillez entrer une lettre valide (a-z).")
+            continue
+
+        return lettre
 
 # ------------------------------------------------------------
 # Test temporaire des fonctions créées jusqu'ici
@@ -162,9 +189,7 @@ lettres_trouvees = []
 
 print("Mot choisi :", mot_secret)
 print("Mot normalisé :", mot_secret_normalise)
-print("Affichage au début :", afficher_mot_cache(mot_secret_normalise, lettres_trouvees))
+print("Affichage :", afficher_mot_cache(mot_secret_normalise, lettres_trouvees))
 
-# Test avec quelques lettres déjà trouvées
-lettres_trouvees = ["a", "o", "e"]
-
-print("Affichage avec lettres trouvées :", afficher_mot_cache(mot_secret_normalise, lettres_trouvees))
+lettre = demander_lettre()
+print("Lettre entrée :", lettre)

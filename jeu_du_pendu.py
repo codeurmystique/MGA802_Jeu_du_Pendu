@@ -78,14 +78,55 @@ def choisir_mot(liste_mots):
     # Retourner le mot sélectionné
     return mot_choisi
 
+def normaliser_mot(mot):
+    """
+    Transforme un mot en une version sans accents.
+
+    Exemple :
+        "éléphant" devient "elephant"
+        "château" devient "chateau"
+
+    Paramètre :
+        mot : le mot original à transformer
+
+    Retour :
+        Le même mot, en minuscules et sans accents
+    """
+
+    # Mettre le mot en minuscules pour éviter les différences entre majuscules et minuscules.
+    mot = mot.lower()
+
+    # Décomposer les lettres accentuées.
+    # Par exemple, "é" devient "e" + accent séparé.
+    mot_decompose = unicodedata.normalize("NFD", mot)
+
+    # Créer une chaîne vide pour reconstruire le mot sans accents.
+    mot_sans_accents = ""
+
+    # Parcourir chaque caractère du mot décomposé.
+    for caractere in mot_decompose:
+
+        # La catégorie "Mn" correspond aux marques d'accent.
+        # On garde seulement les caractères qui ne sont pas des accents.
+        if unicodedata.category(caractere) != "Mn":
+            mot_sans_accents += caractere
+
+    # Retourner le mot nettoyé.
+    return mot_sans_accents
+
 # ------------------------------------------------------------
-# Test temporaire de la fonction choisir_mot
+# Test temporaire des fonctions créées jusqu'ici
 # Cette partie sert seulement à vérifier que la lecture du fichier fonctionne.
 # Elle sera retirée ou modifiée plus tard.
 # ------------------------------------------------------------
 
 mots = charger_mots()
-mots_secret = choisir_mot(mots)
+mot_secret = choisir_mot(mots)
+mot_secret_normalise = normaliser_mot(mot_secret)
 
-print("Mot choisi :", mots_secret)
+print("Mot choisi :", mot_secret)
+print("Mot normalisé :", mot_secret_normalise)
 
+print("Test accent éléphant :", normaliser_mot("éléphant"))
+print("Test accent château :", normaliser_mot("château"))
+print("Test accent forêt :", normaliser_mot("forêt"))

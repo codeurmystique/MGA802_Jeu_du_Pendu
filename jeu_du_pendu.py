@@ -114,6 +114,40 @@ def normaliser_mot(mot):
     # Retourner le mot nettoyé.
     return mot_sans_accents
 
+
+def afficher_mot_cache(mot, lettres_trouvees):
+    """
+    Affiche l'état actuel du mot à deviner.
+
+    Les lettres déjà trouvées sont affichées.
+    Les lettres non trouvées sont remplacées par un tiret bas _.
+
+    Paramètres :
+        mot : le mot secret normalisé, sans accents
+        lettres_trouvees : liste des lettres déjà devinées correctement
+
+    Retour :
+        Une chaîne de caractères représentant le mot partiellement découvert
+    """
+
+    # Créer une chaîne vide pour construire l'affichage du mot.
+    affichage = ""
+
+    # Parcourir chaque lettre du mot secret.
+    for lettre in mot:
+
+        # Si la lettre a déjà été trouvée, on l'affiche.
+        if lettre in lettres_trouvees:
+            affichage += lettre + " "
+
+        # Sinon, on affiche un tiret bas.
+        else:
+            affichage += "_ "
+
+    # Enlever l'espace inutile à la fin et retourner l'affichage.
+    return affichage.strip()
+
+
 # ------------------------------------------------------------
 # Test temporaire des fonctions créées jusqu'ici
 # Cette partie sert seulement à vérifier que la lecture du fichier fonctionne.
@@ -124,9 +158,13 @@ mots = charger_mots()
 mot_secret = choisir_mot(mots)
 mot_secret_normalise = normaliser_mot(mot_secret)
 
+lettres_trouvees = []
+
 print("Mot choisi :", mot_secret)
 print("Mot normalisé :", mot_secret_normalise)
+print("Affichage au début :", afficher_mot_cache(mot_secret_normalise, lettres_trouvees))
 
-print("Test accent éléphant :", normaliser_mot("éléphant"))
-print("Test accent château :", normaliser_mot("château"))
-print("Test accent forêt :", normaliser_mot("forêt"))
+# Test avec quelques lettres déjà trouvées
+lettres_trouvees = ["a", "o", "e"]
+
+print("Affichage avec lettres trouvées :", afficher_mot_cache(mot_secret_normalise, lettres_trouvees))

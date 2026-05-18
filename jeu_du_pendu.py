@@ -175,21 +175,104 @@ def demander_lettre():
 
         return lettre
 
+def jouer_partie(liste_mots):
+    """
+    Lance une partie complète du jeu du pendu.
+
+    Paramètre :
+        liste_mots : liste des mots disponibles pour le jeu
+
+    Fonctionnement :
+        - Choisit un mot au hasard
+        - Donne 6 chances au joueur
+        - Demande des lettres
+        - Affiche l'état du mot
+        - Met à jour les chances
+        - Vérifie la victoire ou la défaite
+    """
+
+    # Choisir un mot au hasard dans la liste.
+    mot_secret = choisir_mot(liste_mots)
+
+    # Normaliser le mot pour gérer les accents.
+    mot_secret_normalise = normaliser_mot(mot_secret)
+
+    # Initialiser le nombre de chances.
+    chances = 6
+
+    # Liste des lettres correctement trouvées.
+    lettres_trouvees = []
+
+    # Liste de toutes les lettres déjà essayées.
+    lettres_essayees = []
+
+    # Message d'introduction pour une nouvelle partie.
+    print("\nNouvelle partie !")
+    print("Vous avez 6 chances pour deviner le mot.")
+
+    # La boucle continue tant qu'il reste des chances.
+    while chances > 0:
+
+        # Afficher l'état actuel du mot.
+        print("\nMot à deviner :", afficher_mot_cache(mot_secret_normalise, lettres_trouvees))
+
+        # Afficher les chances restantes.
+        print("Chances restantes :", chances)
+
+        # Afficher les lettres déjà essayées si la liste n'est pas vide.
+        if lettres_essayees:
+            print("Lettres déjà essayées :", ", ".join(lettres_essayees))
+
+        # Demander une lettre valide à l'utilisateur.
+        lettre = demander_lettre()
+
+        # Normaliser la lettre entrée pour gérer les accents éventuels.
+        lettre = normaliser_mot(lettre)
+
+        # Vérifier si la lettre a déjà été essayée.
+        if lettre in lettres_essayees:
+            print("Vous avez déjà essayé cette lettre.")
+            continue
+
+        # Ajouter la lettre à la liste des lettres essayées.
+        lettres_essayees.append(lettre)
+
+        # Vérifier si la lettre est dans le mot secret.
+        if lettre in mot_secret_normalise:
+
+            # Ajouter la lettre aux lettres trouvées.
+            lettres_trouvees.append(lettre)
+
+            # Informer l'utilisateur.
+            print("Bonne réponse !")
+
+        else:
+            # Retirer une chance si la lettre n'est pas dans le mot.
+            chances -= 1
+
+            # Informer l'utilisateur.
+            print("Mauvaise réponse.")
+
+        # Vérifier si toutes les lettres du mot ont été trouvées.
+        mot_actuel = afficher_mot_cache(mot_secret_normalise, lettres_trouvees)
+
+        # Si le mot affiché ne contient plus de _, le joueur a gagné.
+        if "_" not in mot_actuel:
+            print("\nMot complété :", mot_actuel)
+            print("Bravo ! Vous avez gagné.")
+            print("Le mot était :", mot_secret)
+            return
+
+    # Si la boucle se termine parce que chances vaut 0, le joueur a perdu.
+    print("\nDommage ! Vous avez perdu.")
+    print("Le mot était :", mot_secret)
+
+
 # ------------------------------------------------------------
-# Test temporaire des fonctions créées jusqu'ici
+# Test temporaire de la boucle principale du jeu
 # Cette partie sert seulement à vérifier que la lecture du fichier fonctionne.
 # Elle sera retirée ou modifiée plus tard.
 # ------------------------------------------------------------
 
 mots = charger_mots()
-mot_secret = choisir_mot(mots)
-mot_secret_normalise = normaliser_mot(mot_secret)
-
-lettres_trouvees = []
-
-print("Mot choisi :", mot_secret)
-print("Mot normalisé :", mot_secret_normalise)
-print("Affichage :", afficher_mot_cache(mot_secret_normalise, lettres_trouvees))
-
-lettre = demander_lettre()
-print("Lettre entrée :", lettre)
+jouer_partie(mots)
